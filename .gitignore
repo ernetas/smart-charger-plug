@@ -21,36 +21,4 @@ npm-debug.log
 
 *.log.*
 
-#jshint files
-.jshintignore
-.jshintrc
-
-.eslintcache
-
-coverage/
-.nyc_output/
-coverage.lcov
-reports/
-
-helm/templates/secrets.yaml
-helm/templates/configmaps.yaml
-
-.env.json
-src/.env.secrets.json
-
-# local setting overrides
-src/config/env/local-overrides.json
-src/config/env/local-test-overrides.json
-
-# Data
-results-*.json
-
-# TypeScript meta
-.tsbuildinfo
-
-# Docker-compose
-postgres-data
-.dockerignore
-
-# TS Build
-dist
+config/*.json
