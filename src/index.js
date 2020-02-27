@@ -6,22 +6,26 @@ const fs = require('fs')
 const plugConfig = config.get('plug');
 const device = new TuyAPI(plugConfig);
 
-function switchDevice(toState) {
+// Add debug option
+// Add option to start/stop socket forcefully
+// Add option to charge fully
+// Charge to 80% in the morning
+
+async function switchDevice(toState) {
   console.log(`Switching device to: ${toState}`);
-  device.find().then(() => {
-    device.connect();
-  });
-  device.on('data', data => {
-    if (data.dps['1'] !== toState) {
-      device.set({set: toState});
-    }
-  });
-  setTimeout(() => { device.disconnect(); }, 5000);
+  await device.find();
+  await device.connect();
+  // let status = await device.get();
+  // console.log(`Current status: ${status}.`);
+  await device.set({set: toState});
+  status = await device.get();
+  console.log(`New status: ${status}.`);
+  device.disconnect();
 }
 
 function isCharging() {
   var chargingState = fs.readFileSync('/sys/class/power_supply/BAT0/status', 'utf8').trim();
-  if (chargingState == "Charging") {
+  if ((chargingState == "Charging") || (chargingState == "Full")) {
     return true
   }
   return false
@@ -49,12 +53,12 @@ setInterval(() => {
     if (isHome()) {
       // console.log(levelPercent)
       // console.log(isCharging())
-      if ((levelPercent < 31) && notCharging()) {
+      if ((levelPercent < 50) && notCharging()) {
         switchDevice(true);
-      } else if ((levelPercent > 80) && isCharging()) {
+      } else if ((levelPercent > 65) && isCharging()) {
         switchDevice(false);
       }
     }
   });
-}, 10000)
+}, 60000)
 
