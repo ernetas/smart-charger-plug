@@ -1,0 +1,14 @@
+{
+  "plug": {
+    "id": "xxxxxxxxxxxxxxxxxxx",
+    "key": "yyyyyyyyyy"
+  },
+  "api": {
+    "key": "aaaaaaaaaaaaaaa",
+    "secret": "bbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "wifi": {
+    "ssid": "uuuuuuuuuu",
+    "password": "iiiiiiiiiiiii"
+  }
+}
