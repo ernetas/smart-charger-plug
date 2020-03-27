@@ -15,8 +15,8 @@ async function switchDevice(toState) {
   console.log(`Switching device to: ${toState}`);
   await device.find();
   await device.connect();
-  // let status = await device.get();
-  // console.log(`Current status: ${status}.`);
+  let status = await device.get();
+  console.log(`Current status: ${status}.`);
   await device.set({set: toState});
   status = await device.get();
   console.log(`New status: ${status}.`);
@@ -51,8 +51,8 @@ setInterval(() => {
   batteryLevel().then(level => {
     levelPercent = Math.round(parseFloat(level)*100);
     if (isHome()) {
-      // console.log(levelPercent)
-      // console.log(isCharging())
+      console.log(levelPercent)
+      console.log(isCharging())
       if ((levelPercent < 50) && notCharging()) {
         switchDevice(true);
       } else if ((levelPercent > 65) && isCharging()) {
