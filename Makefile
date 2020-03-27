@@ -29,4 +29,4 @@ restart:
 	systemctl --user restart smart-plug
 
 logs:
-	journalctl --follow --user --unit smart-plug.service
+	journalctl -o cat --follow --user --unit smart-plug.service | yarn run pino-pretty -t
