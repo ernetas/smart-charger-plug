@@ -3,7 +3,7 @@
 NODE_ENV ?= production
 
 run:
-	yarn start
+	NODE_ENV=$(NODE_ENV) yarn start
 
 install-tuya:
 	yarn global add @tuyapi/cli
@@ -25,7 +25,7 @@ socket-status:
 socket-auto:
 	systemctl --user start smart-plug
 
-socket-restart:
+restart:
 	systemctl --user restart smart-plug
 
 logs:
