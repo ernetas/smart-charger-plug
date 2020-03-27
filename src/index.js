@@ -26,33 +26,34 @@ async function switchDevice(toState) {
 function isCharging() {
   var chargingState = fs.readFileSync('/sys/class/power_supply/BAT0/status', 'utf8').trim();
   if ((chargingState == "Charging") || (chargingState == "Full")) {
-    return true
+    return true;
   }
-  return false
+  return false;
 }
 
 function notCharging() {
   if (isCharging()) {
-    return false
+    return false;
   }
-  return true
+  return true;
 }
 
 function isHome() {
   const { execFileSync } = require('child_process');
   const stdout = execFileSync('iwgetid', ['-r'],  {encoding: 'utf-8'});
   if (stdout.trim() == "sun") {
-    return true
+    return true;
   }
-  return false
+  return false;
 }
 
 setInterval(() => {
   batteryLevel().then(level => {
     levelPercent = Math.round(parseFloat(level)*100);
+    console.log(`Battery level: ${levelPercent}`);
     if (isHome()) {
-      console.log(levelPercent)
-      console.log(isCharging())
+      console.log(`We're home. Charging: `);
+      console.log(isCharging());
       if ((levelPercent < 50) && notCharging()) {
         switchDevice(true);
       } else if ((levelPercent > 65) && isCharging()) {
@@ -60,5 +61,5 @@ setInterval(() => {
       }
     }
   });
-}, 60000)
+}, 5000)
 
