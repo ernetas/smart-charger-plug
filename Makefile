@@ -1,28 +1,28 @@
-.PHONY: run install-tuya-cli-globally
+.PHONY: run install link on off status auto restart logs
 
 NODE_ENV ?= production
 
 run:
 	NODE_ENV=$(NODE_ENV) yarn start
 
-install-tuya:
+install:
 	yarn global add @tuyapi/cli
 
-link-tuya:
+link:
 	~/.yarn/bin/tuya-cli link --ssid $$(jq .wifi.ssid -r config/$(NODE_ENV).json) --password $$(jq .wifi.password -r config/$(NODE_ENV).json) --api-key $$(jq .api.key -r config/$(NODE_ENV).json) --api-secret $$(jq .api.secret -r config/$(NODE_ENV).json) --schema smartbatteryplug
 
-socket-on:
+on:
 	systemctl --user stop smart-plug
 	~/.yarn/bin/tuya-cli set --id $$(jq .plug.id -r config/$(NODE_ENV).json) --key $$(jq .plug.key -r config/$(NODE_ENV).json) --set "true"
 
-socket-off:
+off:
 	systemctl --user stop smart-plug
 	~/.yarn/bin/tuya-cli set --id $$(jq .plug.id -r config/$(NODE_ENV).json) --key $$(jq .plug.key -r config/$(NODE_ENV).json) --set "false"
 
-socket-status:
+status:
 	~/.yarn/bin/tuya-cli get --id $$(jq .plug.id -r config/$(NODE_ENV).json) --key $$(jq .plug.key -r config/$(NODE_ENV).json)
 
-socket-auto:
+auto:
 	systemctl --user start smart-plug
 
 restart:
