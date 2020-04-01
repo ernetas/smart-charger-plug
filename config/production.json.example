@@ -1,8 +1,10 @@
 {
-  "plug": {
-    "id": "xxxxxxxxxxxxxxxxxxx",
-    "key": "yyyyyyyyyy"
-  },
+  "plugs": [
+    {
+      "id": "xxxxxxxxxxxxxxxxxxx",
+      "key": "yyyyyyyyyy"
+    }
+  ],
   "api": {
     "key": "aaaaaaaaaaaaaaa",
     "secret": "bbbbbbbbbbbbbbbbbbbbbb"

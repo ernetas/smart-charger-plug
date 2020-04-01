@@ -5,15 +5,9 @@ const fs = require('fs');
 const { execFileSync } = require('child_process');
 const logger = require('pino')();
 
-const plugConfig = config.get('plug');
-const device = new TuyAPI(plugConfig);
+const plugs = config.get('plugs');
 
-// Add debug option
-// Add option to start/stop socket forcefully
-// Add option to charge fully
-// Charge to 80% in the morning
-
-async function switchDevice(toState) {
+async function switchDevice(toState, device) {
   logger.info(`Switching device to: ${toState}`);
   await device.find();
   await device.connect();
@@ -23,6 +17,12 @@ async function switchDevice(toState) {
   status = await device.get();
   logger.info(`New status: ${status}.`);
   device.disconnect();
+}
+
+async function switchAllDevices(toState) {
+  plugs.forEach((plugConfig) => {
+    switchDevice(toState, new TuyAPI(plugConfig));
+  });
 }
 
 function isCharging() {
@@ -44,14 +44,14 @@ function isHome() {
 setInterval(() => {
   batteryLevel().then((level) => {
     const levelPercent = Math.round(parseFloat(level) * 100);
-    logger.info(`Battery level: ${levelPercent}`);
-    if (isHome()) {
+    logger.info(`Battery level: ${levelPercent}%`);
+    if (isHome()) { // Only operate at home, as the plug can only access home WiFi
       const chargingStatus = isCharging();
-      logger.info(`We're home. Charging: ${chargingStatus}`);
+      logger.info(`Charging: ${chargingStatus}`);
       if ((levelPercent < 50) && (!chargingStatus)) {
-        switchDevice(true);
+        switchAllDevices(true);
       } else if ((levelPercent > 65) && chargingStatus) {
-        switchDevice(false);
+        switchAllDevices(false);
       }
     }
   });
