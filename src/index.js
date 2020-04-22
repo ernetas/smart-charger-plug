@@ -48,9 +48,9 @@ setInterval(() => {
     if (isHome()) { // Only operate at home, as the plug can only access home WiFi
       const chargingStatus = isCharging();
       logger.info(`Charging: ${chargingStatus}`);
-      if ((levelPercent < 50) && (!chargingStatus)) {
+      if ((levelPercent < 30) && (!chargingStatus)) {
         switchAllDevices(true);
-      } else if ((levelPercent > 65) && chargingStatus) {
+      } else if ((levelPercent > 60) && chargingStatus) {
         switchAllDevices(false);
       }
     }

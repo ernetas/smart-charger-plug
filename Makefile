@@ -13,14 +13,17 @@ link:
 
 on:
 	systemctl --user stop smart-plug
-	~/.yarn/bin/tuya-cli set --id $$(jq .plug.id -r config/$(NODE_ENV).json) --key $$(jq .plug.key -r config/$(NODE_ENV).json) --set "true"
+	~/.yarn/bin/tuya-cli set --id $$(jq .plugs[0].id -r config/$(NODE_ENV).json) --key $$(jq .plugs[0].key -r config/$(NODE_ENV).json) --set "true"
+	~/.yarn/bin/tuya-cli set --id $$(jq .plugs[1].id -r config/$(NODE_ENV).json) --key $$(jq .plugs[1].key -r config/$(NODE_ENV).json) --set "true"
 
 off:
 	systemctl --user stop smart-plug
-	~/.yarn/bin/tuya-cli set --id $$(jq .plug.id -r config/$(NODE_ENV).json) --key $$(jq .plug.key -r config/$(NODE_ENV).json) --set "false"
+	~/.yarn/bin/tuya-cli set --id $$(jq .plugs[0].id -r config/$(NODE_ENV).json) --key $$(jq .plugs[0].key -r config/$(NODE_ENV).json) --set "false"
+	~/.yarn/bin/tuya-cli set --id $$(jq .plugs[1].id -r config/$(NODE_ENV).json) --key $$(jq .plugs[1].key -r config/$(NODE_ENV).json) --set "false"
 
 status:
-	~/.yarn/bin/tuya-cli get --id $$(jq .plug.id -r config/$(NODE_ENV).json) --key $$(jq .plug.key -r config/$(NODE_ENV).json)
+	~/.yarn/bin/tuya-cli get --id $$(jq .plugs[0].id -r config/$(NODE_ENV).json) --key $$(jq .plugs[0].key -r config/$(NODE_ENV).json)
+	~/.yarn/bin/tuya-cli get --id $$(jq .plugs[1].id -r config/$(NODE_ENV).json) --key $$(jq .plugs[1].key -r config/$(NODE_ENV).json)
 
 auto:
 	systemctl --user start smart-plug
